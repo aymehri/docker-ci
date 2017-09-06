@@ -3,7 +3,7 @@ FROM jenkins/jenkins:lts
 ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
 
 USER root
-RUN apt-get update && apt-get install -y ruby make sudo curl git maven
+RUN apt-get update && apt-get install -y ruby make sudo curl git maven dos2unix
 RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 RUN apt-get install -y nodejs
 
@@ -20,8 +20,12 @@ COPY security.groovy /usr/share/jenkins/ref/init.groovy.d/security.groovy
 #COPY executors.groovy /usr/share/jenkins/ref/init.groovy.d/executors.groovy
 
 # installing specific list of plugins. see: https://github.com/jenkinsci/docker#preinstalling-plugins
-#COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
-#RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
+COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
+#fix windows line endings
+USER root
+RUN dos2unix /usr/share/jenkins/ref/plugins.txt && apt-get --purge remove -y dos2unix && rm -rf /var/lib/apt/lists/*
+USER jenkins
+RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
 
 ############################################
 # Configure Jenkins
