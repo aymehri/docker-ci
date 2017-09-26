@@ -16,8 +16,8 @@ RUN curl -sSL -O https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz &&
 RUN mv docker/* /usr/bin/
 
 USER jenkins
-COPY security.groovy /usr/share/jenkins/ref/init.groovy.d/security.groovy
-#COPY executors.groovy /usr/share/jenkins/ref/init.groovy.d/executors.groovy
+COPY groovy/security.groovy /usr/share/jenkins/ref/init.groovy.d/security.groovy
+#COPY groovy/executors.groovy /usr/share/jenkins/ref/init.groovy.d/executors.groovy
 
 # installing specific list of plugins. see: https://github.com/jenkinsci/docker#preinstalling-plugins
 COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
