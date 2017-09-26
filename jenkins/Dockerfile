@@ -21,10 +21,13 @@ COPY groovy/security.groovy /usr/share/jenkins/ref/init.groovy.d/security.groovy
 
 # installing specific list of plugins. see: https://github.com/jenkinsci/docker#preinstalling-plugins
 COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
-#fix windows line endings
+
+# FIX START : windows line endings (delete when solved)
 USER root
 RUN dos2unix /usr/share/jenkins/ref/plugins.txt && apt-get --purge remove -y dos2unix && rm -rf /var/lib/apt/lists/*
 USER jenkins
+# FIX END
+
 RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
 
 ############################################
