@@ -14,7 +14,7 @@ services:
       - /opt/jenkins/:/var/lib/jenkins/
 
   sonarqube:
-    image: sonarqube
+    image: ./sonar
     ports:
       - "9000:9000"
     networks:

@@ -3,7 +3,7 @@ FROM jenkins/jenkins:lts
 ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
 
 USER root
-RUN apt-get update && apt-get install -y ruby make sudo curl git maven dos2unix
+RUN apt-get update && apt-get install -y ruby make sudo curl git maven
 RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 RUN apt-get install -y nodejs
 
