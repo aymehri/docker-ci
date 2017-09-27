@@ -1,12 +1,24 @@
 version: "2"
 
 services:
+
+  jenkins:
+    build: ./jenkins
+    ports:
+      - "18080:8080"
+    networks:
+      - prodnetwork
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/local/bin/docker:/usr/bin/docker
+      - /opt/jenkins/:/var/lib/jenkins/
+
   sonarqube:
     image: sonarqube
     ports:
       - "9000:9000"
     networks:
-      - sonarnet
+      - prodnetwork
     environment:
       - SONARQUBE_JDBC_URL=jdbc:postgresql://db:5432/sonar
     volumes:
@@ -18,7 +30,7 @@ services:
   db:
     image: postgres
     networks:
-      - sonarnet
+      - prodnetwork
     environment:
       - POSTGRES_USER=sonar
       - POSTGRES_PASSWORD=sonar
@@ -27,8 +39,15 @@ services:
       # This needs explicit mapping due to https://github.com/docker-library/postgres/blob/4e48e3228a30763913ece952c611e5e9b95c8759/Dockerfile.template#L52
       - postgresql_data:/var/lib/postgresql/data
 
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    networks:
+      - prodnetwork
+
 networks:
-  sonarnet:
+  prodnetwork:
     driver: bridge
 
 volumes:
@@ -38,3 +57,4 @@ volumes:
   sonarqube_bundled-plugins:
   postgresql:
   postgresql_data:
+ 
