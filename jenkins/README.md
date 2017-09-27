@@ -2,8 +2,8 @@
 
 Usage:
 ```
-$ docker build -t jenkins .
-$ docker run -d -p=8080:8080 jenkins
+$ docker build -t aymehri/jenkins .
+$ docker run -d -p=8080:8080 aymehri/jenkins
 ```
 
 Once Jenkins is up and running go to http://192.168.99.100:8080
